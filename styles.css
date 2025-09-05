@@ -4,18 +4,78 @@
     font-family: 'Poppins', sans-serif;
     box-sizing: border-box;
 }
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0095ff;
+    }
+    to {
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #0095ff;
+    }
+}
+
+@keyframes popUp {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .hero {
     width: 100%;
-    height: 100vh;
-    background: linear-gradient(45deg, #010758, #490d61);
+    min-height: 100vh;
+    background: linear-gradient(45deg, #000000, #0a1930);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     color: #fff;
     text-align: center;
-    overflow: hidden;
+    padding: 20px;
     animation: fadeIn 2s ease-in-out;
+    position: relative;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(0, 149, 255, 0.1) 0%, transparent 70%);
+    pointer-events: none;
 }
 
 /* Heading animation */
@@ -30,7 +90,7 @@
 }
 
 .hero h1 span {
-    color: skyblue;
+    color: #0095ff;
 }
 
 /* Glowing text animation */
@@ -41,13 +101,14 @@
 textarea {
     width: 680px;
     height: 250px;
-    background: #403d84;
+    background: rgba(10, 25, 48, 0.9);
     color: #fff;
     font-size: 15px;
-    border: 0;
+    border: 1px solid rgba(0, 149, 255, 0.2);
     outline: 0;
     padding: 20px;
     border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 149, 255, 0.1);
     resize: none;
     margin-bottom: 30px;
     opacity: 0;
@@ -71,7 +132,7 @@ textarea::placeholder {
 }
 
 button {
-    background: #ff2963;
+    background: #0095ff;
     color: #fff;
     font-size: 16px;
     padding: 10px 30px;
@@ -81,13 +142,36 @@ button {
     cursor: pointer;
     display: flex;
     align-items: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: 0.5s;
 }
 
 /* Button hover animation */
 button:hover {
-    transform: scale(1.1);
-    box-shadow: 0px 0px 20px #ff2963;
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 149, 255, 0.4);
+    background: #0077cc;
+}
+
+button:hover::before {
+    left: 100%;
 }
 
 button img {
@@ -98,6 +182,110 @@ button img {
 select {
     flex: 1;
     color: #fff;
+    background: rgba(10, 25, 48, 0.9);
+    padding: 15px;
+    border: 1px solid rgba(0, 149, 255, 0.2);
+    outline: 0;
+    border-radius: 35px;
+    appearance: none;
+    cursor: pointer;
+    background-image: url('dropdown_icon.png');
+    background-repeat: no-repeat;
+    background-size: 15px;
+    background-position: calc(100% - 20px) center;
+    padding-right: 40px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(0, 149, 255, 0.1);
+}
+
+select:hover, select:focus {
+    border-color: rgba(0, 149, 255, 0.5);
+    box-shadow: 0 0 25px rgba(0, 149, 255, 0.2);
+    background-color: rgba(10, 25, 48, 1);
+}
+    
+select:hover {
+    background: #4f4c9e;
+}
+
+/* Loading animation */
+.loading {
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s linear infinite;
+    margin-right: 10px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 32px;
+        margin-bottom: 30px;
+    }
+
+    textarea {
+        width: 90%;
+        height: 200px;
+    }
+
+    .row {
+        width: 90%;
+        flex-direction: column;
+    }
+
+    select, button {
+        width: 100%;
+    }
+
+    button {
+        margin-top: 15px;
+    }
+}
+
+/* Custom Scrollbar */
+textarea::-webkit-scrollbar {
+    width: 10px;
+}
+
+textarea::-webkit-scrollbar-track {
+    background: rgba(10, 25, 48, 0.9);
+    border-radius: 5px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+    background: #0095ff;
+    border-radius: 5px;
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+    background: #0077cc;
+}
+
+/* Focus States */
+textarea:focus {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+/* Error State */
+.error {
+    color: #ff2963;
+    margin-top: 10px;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.error.show {
+    opacity: 1;
+
     background: #403d84;
     padding: 10px 20px;
     border: 0;
@@ -157,3 +345,4 @@ select:hover {
         opacity: 1;
     }
 }
+
